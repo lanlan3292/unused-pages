@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lightzone — We Build What's Next</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06060a;
+    --surface: #0d0d14;
+    --accent: #c8ff3e;
+    --accent2: #3efff0;
+    --text: #f0efea;
+    --muted: #6b6a74;
+    --border: rgba(200,255,62,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.2s, height 0.2s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    width: 40px; height: 40px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease;
+    opacity: 0.5;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9997;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 48px;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+  }
+  nav.scrolled { border-color: var(--border); }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.15rem;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: var(--bg);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px 22px;
+    border: none;
+    cursor: none;
+    font-weight: 400;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent2); transform: translateY(-1px); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(200,255,62,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,255,62,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black, transparent);
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(200,255,62,0.08) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    pointer-events: none;
+    animation: pulse 6s ease-in-out infinite;
+  }
+  .hero-glow2 {
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(62,255,240,0.06) 0%, transparent 70%);
+    bottom: 0; left: 200px;
+    pointer-events: none;
+    animation: pulse 8s ease-in-out infinite reverse;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.7; }
+  }
+
+  .hero-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    max-width: 900px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-title .line2 {
+    display: block;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(240,239,234,0.3);
+  }
+  .hero-title .accent { color: var(--accent); }
+
+  .hero-sub {
+    margin-top: 48px;
+    max-width: 480px;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    margin-top: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    border: none;
+    cursor: none;
+    font-weight: 400;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    border: 1px solid var(--border);
+    cursor: none;
+    font-weight: 400;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 48px;
+    left: 48px;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.2s forwards;
+  }
+  .scroll-line {
+    width: 40px; height: 1px;
+    background: var(--muted);
+    position: relative;
+    overflow: hidden;
+  }
+  .scroll-line::after {
+    content: '';
+    position: absolute;
+    left: -100%;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--accent);
+    animation: slideLine 2s 1.5s infinite;
+  }
+  @keyframes slideLine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* MARQUEE */
+  .marquee-section {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .marquee-track {
+    display: flex;
+    gap: 0;
+    animation: marquee 20s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 0 32px;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .marquee-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* SECTIONS */
+  section { padding: 120px 48px; }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    max-width: 700px;
+  }
+
+  /* ABOUT */
+  #about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    border-top: 1px solid var(--border);
+  }
+  .about-right {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 2;
+  }
+  .about-right p + p { margin-top: 24px; }
+  .about-right strong { color: var(--text); font-weight: 400; }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin-top: 60px;
+    background: var(--border);
+  }
+  .stat-item {
+    background: var(--bg);
+    padding: 32px;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* SERVICES */
+  #services { border-top: 1px solid var(--border); }
+  .services-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 64px;
+  }
+
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+  .service-card {
+    background: var(--surface);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .service-card:hover { background: #111118; }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .service-card:hover::before { transform: scaleX(1); }
+
+  .service-num {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 32px;
+    font-family: 'DM Mono', monospace;
+  }
+  .service-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .service-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .service-arrow {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: var(--muted);
+    transition: all 0.3s;
+  }
+  .service-card:hover .service-arrow {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: rotate(45deg);
+  }
+
+  /* TEAM */
+  #team { border-top: 1px solid var(--border); }
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 64px;
+  }
+  .member-card {
+    position: relative;
+    overflow: hidden;
+  }
+  .member-avatar {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: var(--surface);
+    position: relative;
+    overflow: hidden;
+  }
+  .member-avatar::before {
+    content: attr(data-initials);
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--accent);
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.15;
+  }
+  .avatar-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.4;
+  }
+  .member-info {
+    padding: 20px 0;
+  }
+  .member-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .member-role {
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .member-bio {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 12px;
+    line-height: 1.7;
+  }
+
+  /* WORK / PROJECTS */
+  #work { border-top: 1px solid var(--border); }
+  .work-list { margin-top: 64px; }
+  .work-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto auto;
+    align-items: center;
+    gap: 40px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s;
+    cursor: none;
+  }
+  .work-item:hover { padding-left: 16px; }
+  .work-item:hover .work-num { color: var(--accent); }
+  .work-num {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    transition: color 0.3s;
+  }
+  .work-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  .work-tags {
+    display: flex;
+    gap: 8px;
+  }
+  .tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+  }
+  .work-arrow {
+    color: var(--muted);
+    font-size: 1.2rem;
+    transition: all 0.3s;
+  }
+  .work-item:hover .work-arrow { color: var(--accent); transform: translateX(4px); }
+
+  /* CONTACT */
+  #contact {
+    border-top: 1px solid var(--border);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-bg {
+    position: absolute;
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(200,255,62,0.05) 0%, transparent 60%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .contact-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    position: relative;
+  }
+  .contact-title .hollow {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(200,255,62,0.3);
+  }
+  .contact-email {
+    font-size: 1.1rem;
+    color: var(--muted);
+    margin: 40px 0;
+    text-decoration: none;
+    display: inline-block;
+    transition: color 0.2s;
+    letter-spacing: 0.05em;
+    position: relative;
+  }
+  .contact-email::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 0; height: 1px;
+    background: var(--accent);
+    transition: width 0.3s;
+  }
+  .contact-email:hover { color: var(--accent); }
+  .contact-email:hover::after { width: 100%; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+  }
+  .footer-logo span { color: var(--accent); }
+  .footer-copy {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  .footer-socials {
+    display: flex;
+    gap: 24px;
+  }
+  .footer-socials a {
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-socials a:hover { color: var(--accent); }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* LIGHT BEAM */
+  .beam {
+    position: absolute;
+    width: 1px;
+    height: 200px;
+    background: linear-gradient(transparent, var(--accent), transparent);
+    opacity: 0.2;
+    animation: beamFloat 8s ease-in-out infinite;
+  }
+  @keyframes beamFloat {
+    0%, 100% { transform: translateY(0) rotate(15deg); opacity: 0.1; }
+    50% { transform: translateY(-40px) rotate(15deg); opacity: 0.3; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="logo">Light<span>zone</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#team">Team</a></li>
+  </ul>
+  <button class="nav-cta">Get in Touch</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="beam" style="right: 20%; top: 10%;"></div>
+  <div class="beam" style="right: 35%; top: 30%; animation-delay: -3s;"></div>
+
+  <p class="hero-label">// Est. 2021 — Building the Future</p>
+  <h1 class="hero-title">
+    We Shape<br>
+    <span class="line2">Tomorrow's</span><br>
+    <span class="accent">Digital World.</span>
+  </h1>
+  <p class="hero-sub">
+    Lightzone is a creative technology team crafting bold digital experiences, scalable systems, and products that define the next generation of the web.
+  </p>
+  <div class="hero-ctas">
+    <a href="#work" class="btn-primary">View Our Work</a>
+    <a href="#contact" class="btn-ghost">Start a Project</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll to Explore
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item"><span>Product Design</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Full-Stack Development</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Brand Identity</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Motion & Animation</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>AI Integration</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Creative Technology</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Product Design</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Full-Stack Development</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Brand Identity</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Motion & Animation</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>AI Integration</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Creative Technology</span><div class="marquee-dot"></div></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-left">
+    <div class="section-label reveal">About Us</div>
+    <h2 class="section-title reveal">Light at the edge of what's possible.</h2>
+    <div class="stats-row reveal">
+      <div class="stat-item">
+        <div class="stat-num">40+</div>
+        <div class="stat-label">Projects Shipped</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">12</div>
+        <div class="stat-label">Team Members</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Years Strong</div>
+      </div>
+    </div>
+  </div>
+  <div class="about-right reveal">
+    <p>
+      We are <strong>Lightzone</strong> — a tight-knit team of designers, engineers, and strategists who believe that great digital products are born at the intersection of <strong>craft, clarity, and courage</strong>.
+    </p>
+    <p>
+      We don't just build things. We question assumptions, challenge briefs, and obsess over every pixel and every line of code until the work earns the right to exist.
+    </p>
+    <p>
+      From concept to launch and beyond, we partner with founders and teams who are <strong>serious about building something remarkable</strong>. That's the only kind of work we do.
+    </p>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header reveal">
+    <div>
+      <div class="section-label">What We Do</div>
+      <h2 class="section-title">End-to-end.<br>No compromises.</h2>
+    </div>
+  </div>
+  <div class="service-grid reveal">
+    <div class="service-card">
+      <div class="service-num">01 /</div>
+      <div class="service-name">Product Design & UX</div>
+      <div class="service-desc">Research-driven design that puts users first. From wireframes to polished interfaces that feel inevitable.</div>
+      <div class="service-arrow">→</div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02 /</div>
+      <div class="service-name">Engineering & Development</div>
+      <div class="service-desc">Full-stack web and mobile development. Fast, scalable, maintainable code built on modern foundations.</div>
+      <div class="service-arrow">→</div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03 /</div>
+      <div class="service-name">Brand & Visual Identity</div>
+      <div class="service-desc">Systems that scale. Logos, type, color, motion — identities that are unmistakable and built to last.</div>
+      <div class="service-arrow">→</div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">04 /</div>
+      <div class="service-name">AI & Intelligent Systems</div>
+      <div class="service-desc">Integrating language models, computer vision, and automation into products people actually use.</div>
+      <div class="service-arrow">→</div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">05 /</div>
+      <div class="service-name">Motion & Interaction</div>
+      <div class="service-desc">Animations that guide, delight, and communicate. Motion as a design material, not an afterthought.</div>
+      <div class="service-arrow">→</div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">06 /</div>
+      <div class="service-name">Strategy & Consulting</div>
+      <div class="service-desc">Vision mapping, product roadmaps, and technical audits to align your team and accelerate velocity.</div>
+      <div class="service-arrow">→</div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <div class="reveal">
+    <div class="section-label">Selected Work</div>
+    <h2 class="section-title">Things we've<br>built and loved.</h2>
+  </div>
+  <div class="work-list reveal">
+    <div class="work-item">
+      <div class="work-num">01 /</div>
+      <div class="work-title">Orbit — SaaS Dashboard</div>
+      <div class="work-tags">
+        <span class="tag">Design</span>
+        <span class="tag">React</span>
+      </div>
+      <div class="work-arrow">↗</div>
+    </div>
+    <div class="work-item">
+      <div class="work-num">02 /</div>
+      <div class="work-title">Vela — E-Commerce Platform</div>
+      <div class="work-tags">
+        <span class="tag">Full-Stack</span>
+        <span class="tag">Brand</span>
+      </div>
+      <div class="work-arrow">↗</div>
+    </div>
+    <div class="work-item">
+      <div class="work-num">03 /</div>
+      <div class="work-title">Pulse — Health & Wellness App</div>
+      <div class="work-tags">
+        <span class="tag">Mobile</span>
+        <span class="tag">UX</span>
+      </div>
+      <div class="work-arrow">↗</div>
+    </div>
+    <div class="work-item">
+      <div class="work-num">04 /</div>
+      <div class="work-title">Meridian — AI Research Tool</div>
+      <div class="work-tags">
+        <span class="tag">AI</span>
+        <span class="tag">Design</span>
+      </div>
+      <div class="work-arrow">↗</div>
+    </div>
+    <div class="work-item">
+      <div class="work-num">05 /</div>
+      <div class="work-title">Kōan — Meditation Platform</div>
+      <div class="work-tags">
+        <span class="tag">Brand</span>
+        <span class="tag">Motion</span>
+      </div>
+      <div class="work-arrow">↗</div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="reveal">
+    <div class="section-label">The Team</div>
+    <h2 class="section-title">Small team.<br>Outsized impact.</h2>
+  </div>
+  <div class="team-grid reveal">
+    <div class="member-card">
+      <div class="member-avatar" data-initials="AL">
+        <svg class="avatar-pattern" viewBox="0 0 200 266" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0" y1="0" x2="200" y2="266" stroke="#c8ff3e" stroke-width="0.5" opacity="0.3"/>
+          <line x1="40" y1="0" x2="200" y2="226" stroke="#c8ff3e" stroke-width="0.5" opacity="0.2"/>
+          <line x1="80" y1="0" x2="200" y2="186" stroke="#c8ff3e" stroke-width="0.5" opacity="0.2"/>
+          <circle cx="100" cy="133" r="60" fill="none" stroke="#c8ff3e" stroke-width="0.5" opacity="0.2"/>
+          <circle cx="100" cy="133" r="30" fill="none" stroke="#3efff0" stroke-width="0.5" opacity="0.2"/>
+        </svg>
+      </div>
+      <div class="member-info">
+        <div class="member-name">Alex Lin</div>
+        <div class="member-role">Co-founder & Design Lead</div>
+        <div class="member-bio">Obsessed with interfaces that feel like they were made for exactly one person.</div>
+      </div>
+    </div>
+    <div class="member-card">
+      <div class="member-avatar" data-initials="SM">
+        <svg class="avatar-pattern" viewBox="0 0 200 266" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="20" width="160" height="226" fill="none" stroke="#c8ff3e" stroke-width="0.5" opacity="0.2"/>
+          <rect x="50" y="50" width="100" height="166" fill="none" stroke="#3efff0" stroke-width="0.5" opacity="0.2"/>
+          <line x1="20" y1="20" x2="180" y2="246" stroke="#c8ff3e" stroke-width="0.5" opacity="0.3"/>
+          <line x1="180" y1="20" x2="20" y2="246" stroke="#c8ff3e" stroke-width="0.5" opacity="0.2"/>
+        </svg>
+      </div>
+      <div class="member-info">
+        <div class="member-name">Sam Mercer</div>
+        <div class="member-role">Co-founder & Tech Lead</div>
+        <div class="member-bio">Builds systems that hold up at scale and don't make the next engineer cry.</div>
+      </div>
+    </div>
+    <div class="member-card">
+      <div class="member-avatar" data-initials="JK">
+        <svg class="avatar-pattern" viewBox="0 0 200 266" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="100,10 190,256 10,256" fill="none" stroke="#c8ff3e" stroke-width="0.5" opacity="0.25"/>
+          <polygon points="100,50 160,220 40,220" fill="none" stroke="#3efff0" stroke-width="0.5" opacity="0.2"/>
+          <line x1="0" y1="133" x2="200" y2="133" stroke="#c8ff3e" stroke-width="0.5" opacity="0.2"/>
+        </svg>
+      </div>
+      <div class="member-info">
+        <div class="member-name">Jamie Kim</div>
+        <div class="member-role">Brand & Motion Designer</div>
+        <div class="member-bio">Makes static things move and moving things feel alive. Typeface collector.</div>
+      </div>
+    </div>
+    <div class="member-card">
+      <div class="member-avatar" data-initials="RO">
+        <svg class="avatar-pattern" viewBox="0 0 200 266" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="133" r="90" fill="none" stroke="#c8ff3e" stroke-width="0.5" opacity="0.2"/>
+          <circle cx="100" cy="133" r="60" fill="none" stroke="#3efff0" stroke-width="0.5" opacity="0.2"/>
+          <circle cx="100" cy="133" r="30" fill="none" stroke="#c8ff3e" stroke-width="0.5" opacity="0.3"/>
+          <line x1="100" y1="43" x2="100" y2="223" stroke="#c8ff3e" stroke-width="0.5" opacity="0.2"/>
+          <line x1="10" y1="133" x2="190" y2="133" stroke="#c8ff3e" stroke-width="0.5" opacity="0.2"/>
+        </svg>
+      </div>
+      <div class="member-info">
+        <div class="member-name">Riley Oh</div>
+        <div class="member-role">AI Engineer</div>
+        <div class="member-bio">Turns model outputs into product features. Believes AI should be invisible and magical.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-bg"></div>
+  <div class="reveal">
+    <div class="section-label" style="justify-content: center;">Let's Work Together</div>
+    <h2 class="contact-title">
+      Have an<br>
+      <span class="hollow">idea?</span><br>
+      Let's light it up.
+    </h2>
+    <br><br>
+    <a href="mailto:hello@lightzone.studio" class="contact-email">hello@lightzone.studio</a>
+    <br><br>
+    <a href="#contact" class="btn-primary" style="margin-top: 16px;">Start a Conversation →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Light<span>zone</span></div>
+  <div class="footer-copy">© 2024 Lightzone Studio. All rights reserved.</div>
+  <div class="footer-socials">
+    <a href="#">Twitter</a>
+    <a href="#">GitHub</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">Dribbble</a>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // Stagger children if multiple
+        const children = e.target.querySelectorAll('.service-card, .work-item, .member-card, .stat-item');
+        children.forEach((c, i) => {
+          c.style.transitionDelay = (i * 0.08) + 's';
+          c.style.opacity = '0';
+          c.style.transform = 'translateY(20px)';
+          c.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          setTimeout(() => {
+            c.style.opacity = '1';
+            c.style.transform = 'translateY(0)';
+          }, i * 80);
+        });
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./CSS/star.css">
+    <title>Lightzone · 追光之域</title>
+</head>
+<body>
+
+<!-- 导航 -->
+<nav class="nav-bar">
+    <img src="./lightzone-logo.jpg" style="width:48px;height:48px;border-radius:8px;">
+    <h2>Lightzone</h2>
+
+    <!-- 语言切换 -->
+    <div class="lang-toggle" id="langToggle" onclick="toggleLang()">
+        <span class="lang-opt" id="opt-zh">中</span>
+        <span class="lang-divider">/</span>
+        <span class="lang-opt" id="opt-en">EN</span>
+    </div>
+
+    <a class="login" href="login.html" id="nav-login">登录 / 注册</a>
+</nav>
+
+<!-- Hero -->
+<div style="text-align:center; padding: 100px 20px 60px;">
+    <h1 style="
+        color: #ffffff;
+        font-size: clamp(3rem, 10vw, 7rem);
+        font-weight: 700;
+        font-family: 'Cinzel', serif;
+        letter-spacing: 0.12em;
+        margin: 0;
+        text-shadow: 0 0 40px rgba(255,255,255,0.4), 0 0 80px rgba(100,160,255,0.2);
+        animation: fadeUp 1s ease both;
+    ">Lightzone</h1>
+    <p id="hero-sub" style="
+        color: rgba(255,255,255,0.5);
+        font-size: 1rem;
+        letter-spacing: 0.3em;
+        margin: 16px 0 0;
+        animation: fadeUp 1s ease 0.2s both;
+    ">夜色将至 &nbsp;·&nbsp; 光域长明</p>
+</div>
+
+<!-- CTA -->
+<div style="text-align:center; padding: 0 20px 20px; animation: fadeUp 1s ease 0.4s both;">
+    <p id="cta-join" style="color:rgba(255,255,255,0.7); font-size:1.15rem; margin:0 0 8px;">现在就加入吧！</p>
+    <p style="color:rgba(255,255,255,0.4); font-size:0.9rem; font-family:monospace; letter-spacing:0.05em;">Java Edition 1.21.8</p>
+</div>
+
+<!-- IP 复制块 -->
+<div class="ip-block" style="animation: fadeUp 1s ease 0.5s both;">
+    <h2 id="ip-label">服务器 IP</h2>
+    <button class="ip-btn" onclick="copyToClipboard('play.lightzone.com')">
+        play.lightzone.com
+    </button>
+    <p class="ip-hint" id="ip-hint">点击即可复制</p>
+</div>
+
+<!-- 卡片区 -->
+<div style="display:flex; gap:24px; justify-content:center; flex-wrap:wrap; padding:20px 24px 60px;">
+
+    <div class="card">
+        <h2 id="card1-title">关于我们</h2>
+        <p id="card1-body">Lightzone 团队于 2026 年 3 月建立，致力于打造一个生机勃勃、其乐融融的 Minecraft 服务器。</p>
+    </div>
+
+    <div class="card">
+        <h2 id="card2-title">玩法 · 深渊</h2>
+        <p id="card2-body">
+            探索未知的恐惧，穿越每一层记忆迷宫，挑战随层级递增。<br><br>
+            击败 Boss，赢取金币！<br>
+            最多支持 4 人组队。<br><br>
+            <span style="color:rgba(74,222,128,0.7); font-size:0.82rem;">奖励同样随层级提升 ↑</span>
+        </p>
+    </div>
+
+    <div class="card">
+        <h2 id="card3-title">服务器公约</h2>
+        <p id="card3-body">
+            禁止未经允许使用或破坏他人物品<br>
+            禁止讨论政治、色情等敏感话题<br>
+            禁止作弊、外挂、利用漏洞<br>
+            禁止破坏建筑、偷窃、恶意骚扰<br>
+            禁止刷屏、引战、发布广告<br>
+            禁止高频红石等影响服务器稳定的行为<br><br>
+            <span style="color:rgba(255,255,255,0.35); font-size:0.78rem;">最终解释权归 Lightzone 所有</span>
+        </p>
+    </div>
+
+</div>
+
+<!-- 页脚 -->
+<footer class="footer-bar">
+    <p id="footer-text">
+        © 2026 Lightzone 服务器. 版权所有<br>
+        此网站与 Mojang Studios 或 Microsoft 无关<br>
+        Minecraft 是 Mojang Studios 的商标
+    </p>
+</footer>
+
+<style>
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 语言切换器 */
+.lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 5px 14px;
+    cursor: pointer;
+    user-select: none;
+    margin-left: 14px;
+    transition: border-color 0.25s, background 0.25s;
+}
+.lang-toggle:hover {
+    border-color: rgba(255,255,255,0.28);
+    background: rgba(255,255,255,0.09);
+}
+.lang-opt {
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.35);
+    transition: color 0.25s ease, font-weight 0.25s ease;
+    line-height: 1;
+}
+.lang-opt.active {
+    color: #ffffff;
+    font-weight: 700;
+}
+.lang-divider {
+    color: rgba(255,255,255,0.18);
+    font-size: 0.7rem;
+}
+
+/* 切换时内容淡入淡出 */
+.lang-fade-out {
+    animation: fadeOut 0.18s ease forwards;
+}
+.lang-fade-in {
+    animation: fadeIn 0.22s ease forwards;
+}
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(-8px); }
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<script>
+const i18n = {
+    zh: {
+        htmlLang:   'zh-CN',
+        pageTitle:  'Lightzone · 追光之域',
+        heroSub:    '夜色将至 &nbsp;·&nbsp; 光域长明',
+        ctaJoin:    '现在就加入吧！',
+        ipLabel:    '服务器 IP',
+        ipHint:     '点击即可复制',
+        navLogin:   '登录 / 注册',
+        card1Title: '关于我们',
+        card1Body:  'Lightzone 团队于 2026 年 3 月建立，致力于打造一个生机勃勃、其乐融融的 Minecraft 服务器。',
+        card2Title: '玩法 · 深渊',
+        card2Body:  `探索未知的恐惧，穿越每一层记忆迷宫，挑战随层级递增。<br><br>击败 Boss，赢取金币！<br>最多支持 4 人组队。<br><br><span style="color:rgba(74,222,128,0.7);font-size:0.82rem;">奖励同样随层级提升 ↑</span>`,
+        card3Title: '服务器公约',
+        card3Body:  `禁止未经允许使用或破坏他人物品<br>禁止讨论政治、色情等敏感话题<br>禁止作弊、外挂、利用漏洞<br>禁止破坏建筑、偷窃、恶意骚扰<br>禁止刷屏、引战、发布广告<br>禁止高频红石等影响服务器稳定的行为<br><br><span style="color:rgba(255,255,255,0.35);font-size:0.78rem;">最终解释权归 Lightzone 所有</span>`,
+        footerText: '© 2026 Lightzone 服务器. 版权所有<br>此网站与 Mojang Studios 或 Microsoft 无关<br>Minecraft 是 Mojang Studios 的商标',
+        toastOk:    '✓ 已复制到剪贴板',
+        toastFail:  '✗ 复制失败，请手动复制',
+    },
+    en: {
+        htmlLang:   'en',
+        pageTitle:  'Lightzone · Where Light Endures',
+        heroSub:    'Night Falls &nbsp;·&nbsp; The Light Remains',
+        ctaJoin:    'Join us now!',
+        ipLabel:    'Server IP',
+        ipHint:     'Click to copy',
+        navLogin:   'Login / Register',
+        card1Title: 'About Us',
+        card1Body:  'The Lightzone team was founded in March 2026, dedicated to building a vibrant and welcoming Minecraft server for everyone.',
+        card2Title: 'Gameplay · The Abyss',
+        card2Body:  `Face the unknown and explore each floor of the memory labyrinth — difficulty scales with depth.<br><br>Defeat bosses and earn gold coins!<br>Up to 4 players per squad.<br><br><span style="color:rgba(74,222,128,0.7);font-size:0.82rem;">Rewards scale with floor depth ↑</span>`,
+        card3Title: 'Server Rules',
+        card3Body:  `No using or destroying others' items without permission<br>No sensitive topics (politics, adult content, illegal activity, etc.)<br>No cheating, hacking, or exploiting bugs<br>No griefing, stealing, or harassment<br>No spamming, trolling, or unsolicited ads<br>No lag-inducing redstone or entity farms<br><br><span style="color:rgba(255,255,255,0.35);font-size:0.78rem;">Lightzone reserves all rights of final interpretation</span>`,
+        footerText: '© 2026 Lightzone Server. All rights reserved.<br>This site is not affiliated with Mojang Studios or Microsoft.<br>Minecraft is a trademark of Mojang Studios.',
+        toastOk:    '✓ Copied to clipboard',
+        toastFail:  '✗ Copy failed — please copy manually',
+    }
+};
+
+let currentLang = 'zh';
+
+// 供 copy.js 读取当前语言的 toast 文字
+window.getToastText = (success) => i18n[currentLang][success ? 'toastOk' : 'toastFail'];
+
+const targets = [
+    ['hero-sub',    'heroSub',    true],
+    ['cta-join',    'ctaJoin',    false],
+    ['ip-label',    'ipLabel',    false],
+    ['ip-hint',     'ipHint',     false],
+    ['nav-login',   'navLogin',   false],
+    ['card1-title', 'card1Title', false],
+    ['card1-body',  'card1Body',  true],
+    ['card2-title', 'card2Title', false],
+    ['card2-body',  'card2Body',  true],
+    ['card3-title', 'card3Title', false],
+    ['card3-body',  'card3Body',  true],
+    ['footer-text', 'footerText', true],
+];
+
+function applyLang(lang, animate) {
+    const t = i18n[lang];
+    document.documentElement.lang = t.htmlLang;
+    document.title = t.pageTitle;
+    document.getElementById('opt-zh').classList.toggle('active', lang === 'zh');
+    document.getElementById('opt-en').classList.toggle('active', lang === 'en');
+
+    if (!animate) {
+        targets.forEach(([id, key, isHtml]) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            isHtml ? (el.innerHTML = t[key]) : (el.textContent = t[key]);
+        });
+        return;
+    }
+
+    // 淡出 → 换内容 → 淡入
+    targets.forEach(([id, key, isHtml]) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.remove('lang-fade-in');
+        el.classList.add('lang-fade-out');
+        setTimeout(() => {
+            isHtml ? (el.innerHTML = t[key]) : (el.textContent = t[key]);
+            el.classList.remove('lang-fade-out');
+            el.classList.add('lang-fade-in');
+        }, 180);
+    });
+}
+
+function toggleLang() {
+    currentLang = currentLang === 'zh' ? 'en' : 'zh';
+    applyLang(currentLang, true);
+}
+
+// 初始化
+applyLang(currentLang, false);
+document.getElementById('opt-zh').classList.add('active');
+</script>
+
+<script src="./copy.js"></script>
+</body>
+</html>

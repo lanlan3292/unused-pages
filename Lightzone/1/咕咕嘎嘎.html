@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <p id="myContent">abc</p>
+    <button onclick="handleBtnClick()">点击复制</button>
+    <script src="copy-helper.js"></script>
+    <script>
+        function handleBtnClick() {
+            const text = document.getElementById('myContent').innerText;
+            copyToClipboard(text);
+        }
+    </script>
+</body>
+
+</html>
