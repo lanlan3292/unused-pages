@@ -1,0 +1,7 @@
+[
+  { "lang": "JavaScript", "pct": 38, "color": "#f7df1e" },
+  { "lang": "Python",     "pct": 25, "color": "#3572a5" },
+  { "lang": "TypeScript", "pct": 18, "color": "#3178c6" },
+  { "lang": "Shell",      "pct": 11, "color": "#7fff8a" },
+  { "lang": "Other",      "pct": 8,  "color": "#444"    }
+]

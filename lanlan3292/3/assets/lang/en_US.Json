@@ -1,16 +1,15 @@
 {
+  "_meta": {
+    "flag": "🇺🇸",
+    "label": "English",
+    "locale": "en-US"
+  },
   "title": "lanlan3292",
   "label": "GitHub / Developer",
   "handle": "github.com/lanlan3292",
   "bio": "An indie developer who loves code, focused on building things that are clean and useful.<br/>Believes good software should run quietly, without drawing attention.",
   "sectionInterest": "Interests",
   "tags": ["Open Source", "Web Dev", "Tools", "CLI", "apple"],
-  "sectionOverview": "Overview",
-  "stats": {
-    "commits": "Commits",
-    "repos": "Repos",
-    "stars": "Stars"
-  },
-  "status": "coding something",
-  "langToggle": "简中"
+  "sectionOverview": "Code Composition",
+  "status": "coding something"
 }
