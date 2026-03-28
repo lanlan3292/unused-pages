@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Links</title>
+    <style>
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+    </style>
+</head>
+<body>
+
+<ul id="list"></ul>
+
+<script>
+    const links = [
+        { name: "Lightzone 2", url: "./Lightzone/2/lightzone.html" },
+        { name: "Lightzone 1", url: "./Lightzone/1/index.html" }
+    ];
+
+    links.sort((a, b) => a.name.localeCompare(b.name));
+
+    const list = document.getElementById("list");
+
+    links.forEach(link => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = link.url;
+        a.textContent = link.name;
+        li.appendChild(a);
+        list.appendChild(li);
+    });
+</script>
+
+</body>
+</html>
