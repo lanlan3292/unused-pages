@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>lanlan3292</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --border: #222;
+      --text: #e8e8e8;
+      --muted: #555;
+      --accent: #7fff8a;
+      --accent2: #4fc3f7;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 560px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      padding: 48px 44px;
+      position: relative;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 60px; height: 2px;
+      background: var(--accent);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .username {
+      font-size: 28px;
+      font-weight: 500;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .username span {
+      color: var(--accent);
+    }
+
+    .handle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 36px;
+    }
+
+    .handle a {
+      color: var(--accent2);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .handle a:hover { border-color: var(--accent2); }
+
+    .bio {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.9;
+      color: #aaa;
+      margin-bottom: 36px;
+      border-left: 2px solid var(--border);
+      padding-left: 16px;
+    }
+
+    .section-title {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 36px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      color: #888;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+
+    .tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 36px;
+    }
+
+    .stat {
+      background: var(--surface);
+      padding: 16px 12px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-top: 4px;
+      display: block;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dot {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 8px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .status {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .year {
+      font-size: 11px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="label">GitHub / Developer</div>
+    <div class="username">lanlan<span>3292</span></div>
+    <div class="handle">
+      <a href="https://github.com/lanlan3292" target="_blank">github.com/lanlan3292</a>
+    </div>
+
+    <p class="bio">
+      热爱代码的独立开发者，专注于构建简洁而有用的东西。<br/>
+      相信好的软件应该安静地运行，不引人注意。
+    </p>
+
+    <div class="section-title">兴趣方向</div>
+    <div class="tags">
+      <span class="tag">Open Source</span>
+      <span class="tag">Web Dev</span>
+      <span class="tag">Tools</span>
+      <span class="tag">Automation</span>
+      <span class="tag">CLI</span>
+    </div>
+
+    <div class="section-title">概览</div>
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-num">∞</span>
+        <span class="stat-label">Commits</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">—</span>
+        <span class="stat-label">Repos</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">✦</span>
+        <span class="stat-label">Stars</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="status">
+        <span class="dot"></span>coding something
+      </div>
+      <div class="year">2024</div>
+    </div>
+  </div>
+</body>
+</html>

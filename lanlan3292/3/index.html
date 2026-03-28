@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>lanlan3292</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+
+  <button class="lang-btn" id="langBtn" onclick="toggleLang()"></button>
+
+  <div class="card" id="card">
+    <div class="label" id="label"></div>
+    <div class="username">lanlan<span>3292</span></div>
+    <div class="handle">
+      <a href="https://github.com/lanlan3292" target="_blank" id="handle"></a>
+    </div>
+
+    <p class="bio" id="bio"></p>
+
+    <div class="section-title" id="sectionInterest"></div>
+    <div class="tags" id="tags"></div>
+
+    <div class="section-title" id="sectionOverview"></div>
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-num">∞</span>
+        <span class="stat-label" id="stat-commits"></span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">—</span>
+        <span class="stat-label" id="stat-repos"></span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">✦</span>
+        <span class="stat-label" id="stat-stars"></span>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="status">
+        <span class="dot"></span><span id="status"></span>
+      </div>
+      <div class="year">2026</div>
+    </div>
+  </div>
+
+  <script>
+    let currentLang = null;
+    const cache = {};
+
+    function detectLang() {
+      const nav = navigator.language || navigator.userLanguage || '';
+      return nav.toLowerCase().startsWith('zh') ? 'zh_CN' : 'en_US';
+    }
+
+    async function loadLang(lang) {
+      if (cache[lang]) return cache[lang];
+      const res = await fetch(`assets/lang/${lang}.json`);
+      cache[lang] = await res.json();
+      return cache[lang];
+    }
+
+    function apply(t) {
+      document.title = t.title;
+      document.getElementById('label').textContent = t.label;
+      document.getElementById('handle').textContent = t.handle;
+      document.getElementById('bio').innerHTML = t.bio;
+      document.getElementById('sectionInterest').textContent = t.sectionInterest;
+      document.getElementById('sectionOverview').textContent = t.sectionOverview;
+      document.getElementById('stat-commits').textContent = t.stats.commits;
+      document.getElementById('stat-repos').textContent = t.stats.repos;
+      document.getElementById('stat-stars').textContent = t.stats.stars;
+      document.getElementById('status').textContent = t.status;
+      document.getElementById('langBtn').textContent = t.langToggle;
+      document.documentElement.lang = t.langToggle === 'EN' ? 'zh' : 'en';
+
+      const tagsEl = document.getElementById('tags');
+      tagsEl.innerHTML = t.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+    }
+
+    async function toggleLang() {
+      const next = currentLang === 'zh_CN' ? 'en_US' : 'zh_CN';
+      const card = document.getElementById('card');
+
+      card.classList.add('fading');
+      await new Promise(r => setTimeout(r, 180));
+
+      const t = await loadLang(next);
+      apply(t);
+      currentLang = next;
+
+      card.classList.remove('fading');
+    }
+
+    // Init
+    (async () => {
+      currentLang = detectLang();
+      const t = await loadLang(currentLang);
+      apply(t);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>lanlan3292</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f2ee;
+      --ink: #1a1714;
+      --muted: #9a9088;
+      --accent: #c0703a;
+      --line: #d8d2c8;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Mono', monospace;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 480px;
+      opacity: 0;
+      transform: translateY(18px);
+      animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+    }
+
+    @keyframes rise {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: radial-gradient(circle at 35% 35%, #5a4e43, #1a1714);
+    }
+
+    .avatar-text {
+      font-size: 0.75rem;
+      color: #f5f2ee;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+    }
+
+    .handle {
+      font-size: 1.25rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    .handle span { color: var(--accent); }
+
+    .sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+      letter-spacing: 0.04em;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin-bottom: 1.6rem;
+    }
+
+    .bio {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 300;
+      font-size: 0.92rem;
+      line-height: 1.85;
+      color: var(--ink);
+      margin-bottom: 2rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      padding: 0.28rem 0.7rem;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      transition: color 0.2s, border-color 0.2s;
+      cursor: default;
+    }
+
+    .tag:hover { color: var(--accent); border-color: var(--accent); }
+
+    .links {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+    }
+
+    .link {
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .link::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -2px;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width 0.25s;
+    }
+
+    .link:hover { color: var(--accent); }
+    .link:hover::after { width: 100%; }
+
+    .dot {
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--line);
+      flex-shrink: 0;
+    }
+
+    .footer {
+      margin-top: 2.4rem;
+      padding-top: 1.4rem;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stats { display: flex; gap: 1.4rem; }
+
+    .stat { text-align: center; }
+
+    .stat-num {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--ink);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
+
+    .gh-btn {
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--ink);
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+      border-radius: 2px;
+    }
+
+    .gh-btn:hover { background: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="top">
+      <div class="avatar">
+        <span class="avatar-text">LL</span>
+      </div>
+      <div>
+        <div class="handle">lan<span>lan</span>3292</div>
+        <div class="sub">github.com/lanlan3292</div>
+      </div>
+    </div>
+
+    <hr/>
+
+    <p class="bio">
+      热爱代码，享受构建。<br/>
+      在开源世界里悄悄留下一些痕迹，<br/>
+      喜欢把想法变成可以运行的东西。
+    </p>
+
+    <div class="tags">
+      <span class="tag">Open Source</span>
+      <span class="tag">Developer</span>
+      <span class="tag">Builder</span>
+      <span class="tag">问题解决者</span>
+    </div>
+
+    <div class="links">
+      <a class="link" href="https://github.com/lanlan3292" target="_blank">GitHub</a>
+      <span class="dot"></span>
+      <a class="link" href="https://github.com/lanlan3292?tab=repositories" target="_blank">Repositories</a>
+      <span class="dot"></span>
+      <a class="link" href="https://github.com/lanlan3292?tab=stars" target="_blank">Stars</a>
+    </div>
+
+    <div class="footer">
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-num">—</span>
+          <span class="stat-label">Repos</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">—</span>
+          <span class="stat-label">Followers</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">—</span>
+          <span class="stat-label">Stars</span>
+        </div>
+      </div>
+      <a class="gh-btn" href="https://github.com/lanlan3292" target="_blank">Visit →</a>
+    </div>
+  </div>
+</body>
+</html>
